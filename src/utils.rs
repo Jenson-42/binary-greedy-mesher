@@ -42,25 +42,18 @@ pub fn is_on_edge(pos: IVec3) -> bool {
 #[inline]
 pub fn get_edging_chunk(pos: IVec3) -> Option<IVec3> {
     let mut chunk_dir = IVec3::ZERO;
-    if pos.x == 0 {
-        chunk_dir.x = -1;
-    } else if pos.x == 31 {
-        chunk_dir.x = 1;
+
+    for i in 0..3 {
+        chunk_dir[i] = match pos[i] {
+            0 => -1,
+            31 => 1,
+            x => x,
+        }
     }
-    if pos.y == 0 {
-        chunk_dir.y = -1;
-    } else if pos.y == 31 {
-        chunk_dir.y = 1;
-    }
-    if pos.z == 0 {
-        chunk_dir.z = -1;
-    } else if pos.z == 31 {
-        chunk_dir.z = 1;
-    }
-    if chunk_dir == IVec3::ZERO {
-        None
-    } else {
-        Some(chunk_dir)
+
+    match chunk_dir == IVec3::ZERO {
+        true => None,
+        false => Some(chunk_dir),
     }
 }
 
